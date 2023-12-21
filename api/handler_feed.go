@@ -1,17 +1,18 @@
-package main
+package api
 
 import (
 	"encoding/json"
 	"fmt"
-	"github/dimmerz92/go_rss_app/internal/database"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/dimmerz92/go_rss_app/internal/database"
+
 	"github.com/google/uuid"
 )
 
-func (apiCfg *apiConfig) handleFeed(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *ApiConfig) HandleFeed(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		apiCfg.middlewareAuth(apiCfg.handlerCreateFeed).ServeHTTP(w, r)
@@ -26,7 +27,7 @@ func (apiCfg *apiConfig) handleFeed(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (apiCfg *apiConfig) handlerCreateFeed(
+func (apiCfg *ApiConfig) handlerCreateFeed(
 	w http.ResponseWriter, r *http.Request, user database.User) {
 		type parameters struct {
 			Name string `json:"name"`
@@ -66,7 +67,7 @@ func (apiCfg *apiConfig) handlerCreateFeed(
 		respondWithJSON(w, http.StatusCreated, dbFeedtoFeed(feed))
 }
 
-func (apiCfg *apiConfig) handlerGetFeed(
+func (apiCfg *ApiConfig) handlerGetFeed(
 	w http.ResponseWriter, r *http.Request, user database.User) {
 		id, err := uuid.Parse(strings.TrimPrefix(r.URL.Path, "/feeds/"))
 		if err != nil {
@@ -94,7 +95,7 @@ func (apiCfg *apiConfig) handlerGetFeed(
 		respondWithJSON(w, http.StatusOK, dbFeedtoFeed(feed))
 }
 
-func (apiCfg *apiConfig) handlerGetAllFeeds(
+func (apiCfg *ApiConfig) handlerGetAllFeeds(
 	w http.ResponseWriter, r *http.Request, user database.User) {
 		feeds, err := apiCfg.DB.GetAllFeeds(r.Context(), user.ID)
 		if err != nil {

@@ -3,18 +3,16 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github/dimmerz92/go_rss_app/internal/database"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/dimmerz92/go_rss_app/api"
+	"github.com/dimmerz92/go_rss_app/internal/database"
+
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
-
-type apiConfig struct {
-	DB *database.Queries
-}
 
 func main() {
 	godotenv.Load(".env")
@@ -34,15 +32,15 @@ func main() {
 		log.Fatal("Could not establish connection to database")
 	}
 
-	apiCfg := apiConfig{
+	apiCfg := api.ApiConfig{
 		DB: database.New(conn),
 	}
 
-	http.HandleFunc("/ready", handlerReadiness)
-	http.HandleFunc("/err", handleErr)
-	http.HandleFunc("/users", apiCfg.handleUser)
-	http.HandleFunc("/feeds", apiCfg.handleFeed)
-	http.HandleFunc("/feeds/", apiCfg.handleFeed)
+	http.HandleFunc("/ready", api.HandlerReadiness)
+	http.HandleFunc("/err", api.HandleErr)
+	http.HandleFunc("/users", apiCfg.HandleUser)
+	http.HandleFunc("/feeds", apiCfg.HandleFeed)
+	http.HandleFunc("/feeds/", apiCfg.HandleFeed)
 
 	fmt.Printf("Server starting on port: %s\n", port)
 

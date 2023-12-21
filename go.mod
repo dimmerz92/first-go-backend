@@ -1,4 +1,4 @@
-module github/dimmerz92/go_rss_app
+module github.com/dimmerz92/go_rss_app
 
 go 1.21.5
 

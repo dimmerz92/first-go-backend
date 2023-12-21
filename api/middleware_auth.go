@@ -1,15 +1,16 @@
-package main
+package api
 
 import (
 	"fmt"
-	"github/dimmerz92/go_rss_app/internal/auth"
-	"github/dimmerz92/go_rss_app/internal/database"
 	"net/http"
+
+	"github.com/dimmerz92/go_rss_app/internal/auth"
+	"github.com/dimmerz92/go_rss_app/internal/database"
 )
 
 type authHandler func(http.ResponseWriter, *http.Request, database.User)
 
-func (apiCfg *apiConfig) middlewareAuth(handler authHandler) http.HandlerFunc {
+func (apiCfg *ApiConfig) middlewareAuth(handler authHandler) http.HandlerFunc {
 	return func (w http.ResponseWriter, r *http.Request) {
 		apiKey, err := auth.GetAPIKey(r.Header)
 		if err != nil {

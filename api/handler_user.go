@@ -1,16 +1,17 @@
-package main
+package api
 
 import (
 	"encoding/json"
 	"fmt"
-	"github/dimmerz92/go_rss_app/internal/database"
 	"net/http"
 	"time"
+
+	"github.com/dimmerz92/go_rss_app/internal/database"
 
 	"github.com/google/uuid"
 )
 
-func (apiCfg *apiConfig) handleUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *ApiConfig) HandleUser(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		apiCfg.middlewareAuth(apiCfg.handlerGetUser).ServeHTTP(w, r)
@@ -21,7 +22,7 @@ func (apiCfg *apiConfig) handleUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *ApiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
@@ -56,7 +57,7 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 }
 	
 
-func (apiCfg *apiConfig) handlerGetUser(
+func (apiCfg *ApiConfig) handlerGetUser(
 	w http.ResponseWriter, r *http.Request, user database.User) {
 		respondWithJSON(w, http.StatusOK, dbUsertoUser(user))
 }

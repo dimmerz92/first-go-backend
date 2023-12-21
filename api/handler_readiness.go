@@ -1,8 +1,8 @@
-package main
+package api
 
 import "net/http"
 
-func handlerReadiness(w http.ResponseWriter, r *http.Request) {
+func HandlerReadiness(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		respondWithJSON(w, http.StatusOK, struct{}{})

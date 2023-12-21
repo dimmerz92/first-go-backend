@@ -1,8 +1,9 @@
-package main
+package api
 
 import (
-	"github/dimmerz92/go_rss_app/internal/database"
 	"time"
+
+	"github.com/dimmerz92/go_rss_app/internal/database"
 
 	"github.com/google/uuid"
 )
